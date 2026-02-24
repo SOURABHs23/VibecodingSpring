@@ -60,28 +60,6 @@ public class StringBufferVsStringBuilderDemo {
         System.out.println("After append: \"" + sb + "\" (hashCode: " + System.identityHashCode(sb) + ")");
         System.out.println("✅ Same hashCode! The same object was modified (no waste).\n");
 
-        // Common StringBuilder methods
-        System.out.println("── Common StringBuilder Methods ──");
-        StringBuilder demo = new StringBuilder("Java");
-
-        demo.append(" is awesome"); // Add at end
-        System.out.println("append():  " + demo);
-
-        demo.insert(5, "17 "); // Insert at position
-        System.out.println("insert():  " + demo);
-
-        demo.replace(0, 4, "Spring"); // Replace range
-        System.out.println("replace(): " + demo);
-
-        demo.delete(6, 9); // Delete range
-        System.out.println("delete():  " + demo);
-
-        demo.reverse(); // Reverse the string
-        System.out.println("reverse(): " + demo);
-
-        System.out.println("length():  " + demo.length());
-        System.out.println("toString(): " + demo.toString());
-        System.out.println();
 
         // ──────────────────────────────────────────
         // 3️⃣ StringBuffer — Mutable, Slower, Thread-safe
@@ -99,77 +77,5 @@ public class StringBufferVsStringBuilderDemo {
         // StringBuffer has the SAME methods as StringBuilder
         // The ONLY difference is that StringBuffer methods are synchronized
 
-        // ──────────────────────────────────────────
-        // 4️⃣ Performance Comparison
-        // ──────────────────────────────────────────
-        System.out.println("──── 4. Performance Comparison ────");
-        int iterations = 500_000;
-
-        // String concatenation (SLOWEST — creates new object each time)
-        long start = System.nanoTime();
-        String result = "";
-        for (int i = 0; i < 50_000; i++) { // Using fewer iterations for String (it's THAT slow)
-            result = result + "a";
-        }
-        long stringTime = System.nanoTime() - start;
-
-        // StringBuilder (FASTEST)
-        start = System.nanoTime();
-        StringBuilder sbPerf = new StringBuilder();
-        for (int i = 0; i < iterations; i++) {
-            sbPerf.append("a");
-        }
-        long stringBuilderTime = System.nanoTime() - start;
-
-        // StringBuffer (SLOWER than StringBuilder due to synchronization)
-        start = System.nanoTime();
-        StringBuffer sbufPerf = new StringBuffer();
-        for (int i = 0; i < iterations; i++) {
-            sbufPerf.append("a");
-        }
-        long stringBufferTime = System.nanoTime() - start;
-
-        System.out.println("String        (50K concat):   " + stringTime / 1_000_000 + " ms  🐌 VERY SLOW");
-        System.out.println("StringBuilder (500K appends): " + stringBuilderTime / 1_000_000 + " ms  ⚡ FASTEST");
-        System.out.println(
-                "StringBuffer  (500K appends): " + stringBufferTime / 1_000_000 + " ms  🔒 Thread-safe but slower");
-        System.out.println();
-
-        // ──────────────────────────────────────────
-        // 5️⃣ Real-World Example: Building an HTML page
-        // ──────────────────────────────────────────
-        System.out.println("──── 5. Real-World Example: Building HTML ────");
-
-        // ❌ BAD: Using String concatenation
-        String html = "";
-        html += "<html>";
-        html += "<body>";
-        html += "<h1>Hello World</h1>";
-        html += "</body>";
-        html += "</html>";
-        // This created 5 temporary String objects — wasteful!
-
-        // ✅ GOOD: Using StringBuilder
-        StringBuilder htmlBuilder = new StringBuilder();
-        htmlBuilder.append("<html>")
-                .append("<body>") // .append() returns 'this', enabling chaining!
-                .append("<h1>Hello World</h1>")
-                .append("</body>")
-                .append("</html>");
-        // This modified the SAME object 5 times — efficient!
-
-        System.out.println("HTML (String):        " + html);
-        System.out.println("HTML (StringBuilder): " + htmlBuilder.toString());
-        System.out.println("Both produce same result, but StringBuilder is much more efficient!\n");
-
-        // ──────────────────────────────────────────
-        // Summary
-        // ──────────────────────────────────────────
-        System.out.println("═══════════════════════════════════════════");
-        System.out.println("  📝 Summary:");
-        System.out.println("  • String        → Immutable, slow for concatenation");
-        System.out.println("  • StringBuilder → Mutable, fast, NOT thread-safe (USE THIS! ⭐)");
-        System.out.println("  • StringBuffer  → Mutable, slower, thread-safe (rarely needed)");
-        System.out.println("═══════════════════════════════════════════");
     }
 }
